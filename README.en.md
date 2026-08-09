@@ -89,6 +89,29 @@ Every important conclusion must be one of `visible_fact`, `image_candidate`, `ru
 
 Coordinates in `image_normalized_0_999` represent only a candidate location in the image. Source pixels derived from known image dimensions are also image-candidate projections. Neither is a DOM location, click target, page coordinate, source-code location, or hidden state. Only a complete, named geometric measurement chain allows `map` to create a `measurable_anchor`, which still requires runtime confirmation.
 
+## Pixel-Level Backstop (BUFF)
+
+The visual service reports coordinates as model estimates (`image_candidate`
+grade); small angles, fine details and exact colors need runtime confirmation.
+The repo ships a browser-independent pixel-evidence tool,
+[scripts/ds-vision-buff.mjs](scripts/ds-vision-buff.mjs), which decodes images
+with Playwright and prints JSON the agent can consume directly:
+
+```bash
+node scripts/ds-vision-buff.mjs size <img>                 # dimensions / aspect
+node scripts/ds-vision-buff.mjs color <img> 0.5,0.45       # real colors (points/grid)
+node scripts/ds-vision-buff.mjs mask <img> --hex 8f7954    # color-region bbox / row spans
+node scripts/ds-vision-buff.mjs textlines <img>            # text-line positions
+node scripts/ds-vision-buff.mjs trapezoid <img> --hex ...  # perspective trapezoid metrics
+node scripts/ds-vision-buff.mjs diff <a> <b>               # grid diff hotspots
+node scripts/ds-vision-buff.mjs tilt-test <angle>          # decisive rotateY direction test
+```
+
+Recommended workflow: let the visual service supply structure and verbatim
+transcriptions (trustworthy), then let BUFF pin down geometry and colors
+(authoritative) before deciding. See [BUFF.md](BUFF.md) for the method notes
+and [scripts/tune-tilt.mjs](scripts/tune-tilt.mjs) for tilt calibration.
+
 ## Video Boundary
 
 Discrete-frame inspection is limited to the listed PTS instants. Execution requires a per-frame static atomic ledger:

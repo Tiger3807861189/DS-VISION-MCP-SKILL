@@ -1,0 +1,13 @@
+# Local runtime data — contains the logged-in browser profile (credentials!).
+# Never commit these.
+.ds-vision/
+
+# Dependencies
+node_modules/
+
+# Offline distribution archives
+_ds-vision-repo.zip
+
+# OS noise
+.DS_Store
+Thumbs.db

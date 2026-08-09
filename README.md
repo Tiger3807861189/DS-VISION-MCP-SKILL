@@ -89,6 +89,22 @@ npm install
 
 坐标使用 `image_normalized_0_999` 时只表示图像候选位置。已知源图尺寸换算出的源像素也是图像候选投影；它们都不是 DOM、点击点、页面坐标、源码位置或隐藏状态。只有完整、具名的几何测量链存在时，`map` 才生成需要运行时确认的 `measurable_anchor`。
 
+## 像素级补强（BUFF）
+
+视觉服务的坐标是模型估算值（`image_candidate` 级别），小角度、小细节与精确颜色需要运行时测量确认。仓库提供独立于浏览器的像素证据工具 [scripts/ds-vision-buff.mjs](scripts/ds-vision-buff.mjs)，使用 Playwright 直接解码图片，输出可消费的 JSON：
+
+```bash
+node scripts/ds-vision-buff.mjs size <img>                 # 尺寸/宽高比
+node scripts/ds-vision-buff.mjs color <img> 0.5,0.45       # 单点/网格真实颜色
+node scripts/ds-vision-buff.mjs mask <img> --hex 8f7954    # 颜色区域 bbox / 逐行范围
+node scripts/ds-vision-buff.mjs textlines <img>            # 文字行位置（暗像素聚类）
+node scripts/ds-vision-buff.mjs trapezoid <img> --hex ...  # 透视梯形：边缘斜率、左右高度比
+node scripts/ds-vision-buff.mjs diff <a> <b>               # 两图网格差异热点
+node scripts/ds-vision-buff.mjs tilt-test <angle>          # 决定性 rotateY 方向实验
+```
+
+推荐工作流：视觉服务提供结构与逐字转写（可信）→ BUFF 验证几何与颜色（权威）→ 再决策。配套方法文档见 [BUFF.md](BUFF.md)，透视角度标定示例见 [scripts/tune-tilt.mjs](scripts/tune-tilt.mjs)。
+
 ## 视频边界
 
 离散帧只支持其列出的 PTS 时刻。执行时，服务要求逐帧静态原子账本：`frame=<n>|pts=<实际值>|atoms=[TEXT=...;COLOR=...;SHAPE=...;OBJECT=...;POSITION=...]`，并要求端点行保留 `unobserved_interval=unknown`。服务以实际 `frame` 与 `pts` 匹配 manifest，生成带 `media_id` 的结构化 claim；atom 中的反斜杠、等号、分号、方括号与圆括号使用 `\\`、`\=`、`\;`、`\[`、`\]`、`\(`、`\)` 可逆转义。默认结果标为 `independent_ab_static_arbitration`；显式 `rounds: 1` 标为 `single_static_observation`，不产生 A/B 一致性或仲裁确认。任何不符合账本 schema、不能匹配 manifest 或含过程性语言的批次都会以 `VIDEO_EVIDENCE_BOUNDARY_REJECTED` 拒绝，不能作为完成的视觉结论交付。

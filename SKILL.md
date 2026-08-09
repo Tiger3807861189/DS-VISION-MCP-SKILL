@@ -97,7 +97,7 @@ MCP 仅注册 `ds_vision` 一个工具。工具的 `action` 参数在同一入�
 
 1. 先按证据状态筛选可直接使用的 `visible_fact`。
 2. 把 `image_candidate` 当作需要浏览器或几何核验的候选。
-3. 为 `runtime_measurement_required` 调用合适的浏览器、DOM、代码或网络工具。
+3. 为 `runtime_measurement_required` 调用合适的浏览器、DOM、代码或网络工具；像素级几何与颜色优先使用仓库自带的 [scripts/ds-vision-buff.mjs](scripts/ds-vision-buff.mjs)（方法见 [BUFF.md](BUFF.md)）。
 4. 保留 `unknown`，不要用推测补齐。
 5. 将视觉证据、运行时测量与代码证据分别记录，再决定实现或验收。
 
