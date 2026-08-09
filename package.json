@@ -1,0 +1,29 @@
+{
+  "name": "ds-vision-v3",
+  "version": "3.0.0",
+  "private": true,
+  "description": "DS-VISION auditable visual evidence for coding agents",
+  "type": "module",
+  "main": "scripts/engine.mjs",
+  "bin": {
+    "ds-vision-v3": "scripts/ds-vision-cli.mjs",
+    "ds-vision-v3-mcp": "scripts/ds-vision-mcp.mjs"
+  },
+  "scripts": {
+    "mcp": "node scripts/ds-vision-mcp.mjs",
+    "health": "node scripts/ds-vision-cli.mjs health",
+    "calibrate": "node scripts/ds-vision-cli.mjs calibrate",
+    "test": "node --test test/*.test.mjs",
+    "validate": "node scripts/validate-skill.mjs",
+    "check": "npm run validate && npm test",
+    "install:browsers": "npx playwright install chromium"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "playwright": "^1.62.1",
+    "zod": "^3.24.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

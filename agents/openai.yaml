@@ -1,0 +1,4 @@
+interface:
+  display_name: "DS-VISION V3"
+  short_description: "Auditable visual evidence for coding agents"
+  default_prompt: "Use $ds-vision-v3 through the single /DS-VISION entry to analyze visual material with evidence boundaries."

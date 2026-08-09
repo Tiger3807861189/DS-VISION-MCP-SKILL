@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ds-vision": {
+      "command": "node",
+      "args": [
+        "C:\\absolute\\path\\to\\ds-vision-v3\\scripts\\ds-vision-mcp.mjs"
+      ],
+      "env": {
+        "DS_VISION_DATA_DIR": "C:\\absolute\\path\\to\\ds-vision-data"
+      }
+    }
+  }
+}
