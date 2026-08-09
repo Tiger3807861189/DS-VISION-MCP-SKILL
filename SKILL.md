@@ -101,4 +101,6 @@ MCP 仅注册 `ds_vision` 一个工具。工具的 `action` 参数在同一入�
 4. 保留 `unknown`，不要用推测补齐。
 5. 将视觉证据、运行时测量与代码证据分别记录，再决定实现或验收。
 
-使用前阅读 [单一入口约定](references/command-contract.md)、[架构](references/architecture.md)、[证据约定](references/evidence-contract.md)、[操作与会话约定](references/operations.md) 与 [视频帧约定](references/video.md)。
+**特别注意**：DS-VISION 在大结构与文字转写上可信，但精确坐标、小角度细节、小面积元素、精确颜色不可靠。遇到后三者务必用 [BUFF 工具](scripts/ds-vision-buff.mjs) 做像素测量验证（方法见 [BUFF.md](BUFF.md)），不要直接用模型读数。
+
+使用前阅读 [单一入口约定](references/command-contract.md)、[架构](references/architecture.md)、[证据约定](references/evidence-contract.md)、[操作与会话约定](references/operations.md)、[视频帧约定](references/video.md) 与 [像素补强方法](BUFF.md)。
